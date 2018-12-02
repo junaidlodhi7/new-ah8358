@@ -1,3 +1,56 @@
+function laodTYVedios() {
+    var html = '';
+    var url = "https://www.googleapis.com/youtube/v3/videos?key=AIzaSyCm8SisFgvDujJztYOBC6NiIh52eL47y9c&chart=mostPopular&regionCode=US&part=snippet,contentDetails,statistics&videoCategoryId="
+    $.get( url, function( data ) {
+        data.items.forEach(function(video){
+            var vId = 'https://www.youtube.com/watch?v=' + video.id;
+            var img = video.snippet.thumbnails.high.url;
+            var title = video.snippet.title;
+            var date = '22 Jun 2017';
+            html += "<div class='video-item'><div class='thumb-wrap'>";
+            html += "<img src='"+ img +"' alt='Movie Thumb'><div class='thumb-hover'>";
+            html += "<a class='play-video' href='" +vId+ "'><i class='fa fa-play'></i></a></div></div>";
+            html += "<div class='video-details'> <h4 class='video-title'><a href='movie-detail.html'>" + title + "</a></h4>";
+            html += "<p class='video-release-on'>" + date + "</p></div></div>";
+        });
+        $('#video-carousel').html(html);
+        $('.video-carousel').owlCarousel({
+            items: 4,
+            itemsDesktop: [1199, 4],
+            itemsDesktopSmall: [991, 3],
+            itemsTablet: [767, 3],
+            itemsMobile: [479, 1],
+            slideSpeed: 200,
+            navigation: true,
+            navigationText: ['<i class=\"fa fa-angle-left\"></i>', '<i class=\"fa fa-angle-right\"></i>'],
+            pagination: false,
+        });
+        /*-----------------------------------------
+        Magnific Popup
+        -----------------------------------------*/
+        $('.image-large').magnificPopup({
+            type: 'image',
+            gallery: {
+                enabled: true
+            }
+        });
+        $('.play-video').magnificPopup({
+            type: 'iframe'
+        });
+        $.extend(true, $.magnificPopup.defaults, {
+            iframe: {
+                patterns: {
+                    youtube: {
+                        index: 'youtube.com/',
+                        id: 'v=',
+                        src: 'http://www.youtube.com/embed/%id%?autoplay=1'
+                    }
+                }
+            }
+        });
+    });
+    
+}
 $(document).ready(function () {
     'use strict';
 
@@ -60,45 +113,10 @@ $(document).ready(function () {
     /*-----------------------------------------
     Video Carousel 
     -----------------------------------------*/
-
-        $('#video-carousel').html(laodTYVedios());
-        $('.video-carousel').owlCarousel({
-            items: 4,
-            itemsDesktop: [1199, 4],
-            itemsDesktopSmall: [991, 3],
-            itemsTablet: [767, 3],
-            itemsMobile: [479, 1],
-            slideSpeed: 200,
-            navigation: true,
-            navigationText: ['<i class=\"fa fa-angle-left\"></i>', '<i class=\"fa fa-angle-right\"></i>'],
-            pagination: false,
-        });
+    laodTYVedios();
     
 
-    /*-----------------------------------------
-    Magnific Popup
-    -----------------------------------------*/
-    $('.image-large').magnificPopup({
-        type: 'image',
-        gallery: {
-            enabled: true
-        }
-    });
-    $('.play-video').magnificPopup({
-        type: 'iframe'
-    });
-    $.extend(true, $.magnificPopup.defaults, {
-        iframe: {
-            patterns: {
-                youtube: {
-                    index: 'youtube.com/',
-                    id: 'v=',
-                    src: 'http://www.youtube.com/embed/%id%?autoplay=1'
-                }
-            }
-        }
-    });
-
+    
     /*==========================================================
 		Newletter Subscribe	
 	==========================================================*/
